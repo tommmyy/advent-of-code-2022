@@ -26,15 +26,20 @@ export const getElf2 = input => {
 
   for (let i = 0; i <= numbers.length; i++) {
     if (numbers[i] == null) {
-      sums.push(sum);
+      if (sums.length) {
+        let j = 0;
+        while (sums[j] < sum) {
+          j++;
+        }
+        sums.splice(j, 0, sum);
+      } else {
+        sums.push(sum);
+      }
       sum = 0;
     } else {
       sum += numbers[i];
     }
   }
 
-  return sums
-    .sort((a, b) => a - b)
-    .slice(-3)
-    .reduce((x, y) => x + y);
+  return sums.slice(-3).reduce((x, y) => x + y);
 };
