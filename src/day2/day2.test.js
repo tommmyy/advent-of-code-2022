@@ -2,42 +2,64 @@ import path from 'path';
 
 import fs from 'fs-extra';
 
-import { getScore, getScore2 } from './day2';
+import { getElf, getElf2 } from './day2';
 
 const realData = fs.readFileSync(path.join(__dirname, './input.txt'), {
   encoding: 'utf-8',
 });
 
-describe('day2', () => {
-  describe('getScore', () => {
+describe('day1', () => {
+  describe('getElf', () => {
     const util = (input, expected) =>
       it(`should return ${expected}`, () => {
-        expect(getScore(input)).toBe(expected);
+        expect(getElf(input)).toBe(expected);
       });
 
     util(
-      `A Y
-B X
-C Z`,
-      15,
+      `1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000`,
+      24000,
     );
 
-    util(realData, 10816);
+    util(realData, 70720);
   });
 
-  describe('getScore2', () => {
+  describe('getElf2', () => {
     const util = (input, expected) =>
       it(`should return ${expected}`, () => {
-        expect(getScore2(input)).toBe(expected);
+        expect(getElf2(input)).toBe(expected);
       });
 
     util(
-      `A Y
-B X
-C Z`,
-      12,
+      `1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000`,
+      45000,
     );
 
-    util(realData, 11657);
+    util(realData, 207148);
   });
 });
