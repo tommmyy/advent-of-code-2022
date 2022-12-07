@@ -65,18 +65,14 @@ const compute = input => {
 
             let nodeToUpdate = currentNode;
 
-            const path = [];
+            let paths = [];
             while (nodeToUpdate) {
-              path.unshift(nodeToUpdate.name);
+              paths = ['', ...paths].map(x => `${x}/${nodeToUpdate.name}`);
               nodeToUpdate = nodeToUpdate.parent;
             }
-
-            path.reduce((currentPath, dirName) => {
-              currentPath.push(dirName);
-              const dirPath = currentPath.join('/');
-              dirSizes[dirPath] = (dirSizes[dirPath] || 0) + size;
-              return currentPath;
-            }, []);
+            paths.forEach(
+              dirPath => (dirSizes[dirPath] = (dirSizes[dirPath] || 0) + size),
+            );
           }
         } else if (type === DIR) {
           if (!currentNode.children.find(dir => dir.name === name)) {
@@ -107,7 +103,7 @@ const SPACE_TO_FREE = 30000000;
 
 export const part2 = input => {
   const dirSizes = compute(input);
-  const filledSpace = DISK_SPACE - dirSizes['/'];
+  const filledSpace = DISK_SPACE - dirSizes['//'];
   return Math.min(
     ...Object.values(dirSizes).filter(
       dirSize => filledSpace + dirSize >= SPACE_TO_FREE,

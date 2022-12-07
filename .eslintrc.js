@@ -5,6 +5,7 @@ module.exports = {
   },
   rules: {
     curly: 'error',
+    'no-loop-func': 'off',
     'sort-imports': [
       'error',
       {
