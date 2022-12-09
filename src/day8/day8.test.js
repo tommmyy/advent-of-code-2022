@@ -21,12 +21,15 @@ describe('day8', () => {
       });
 
     testUtil(
-      `input
-`,
-      95437,
+      `30373
+25512
+65332
+33549
+35390`,
+      21,
     );
 
-    testUtil(realData, 1454188);
+    testUtil(realData, 1843);
   });
 
   describe('2', () => {
@@ -36,12 +39,16 @@ describe('day8', () => {
         expect(result).toBe(expected);
       });
 
-    testUtil(
-      `input
-`,
-      95437,
-    );
+    testUtil('30373', 3);
+    // testUtil(
+    //   `30373
+    // 25512
+    // 65332
+    // 33549
+    // 35390`,
+    //   8,
+    // );
 
-    testUtil(realData, 1454188);
+    // testUtil(realData, 1454188);
   });
 });
