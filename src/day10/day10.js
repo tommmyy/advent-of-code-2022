@@ -1,4 +1,4 @@
-import { addIndex, compose, filter, map, reduce, split } from 'ramda';
+import { addIndex, compose, filter, last, map, reduce, split } from 'ramda';
 
 const parse = compose(
   map(compose(([x, y]) => (y ? [x, Number(y)] : [x]), split(' '))),
@@ -8,20 +8,15 @@ const parse = compose(
 
 const compute = compose(
   addIndex(reduce)(
-    ([x, signalSum], instruction, i) => {
-      let newX = x;
-      let newSignalSum = signalSum;
-
-      if ((i + 21) % 40 === 0) {
-        newSignalSum += (i + 1) * x;
-      }
+    (xs, instruction) => {
+      let newX = last(xs);
       if (instruction) {
         const [, arg] = instruction;
         newX += arg;
       }
-      return [newX, newSignalSum];
+      return [...xs, newX];
     },
-    [1, 0],
+    [1],
   ),
   reduce((state, instruction) => {
     const [command] = instruction;
@@ -35,14 +30,26 @@ const compute = compose(
   parse,
 );
 
-export const part1 = input => {
-  const result = compose(compute)(input);
-  // TODO
-  return result;
-};
+export const part1 = compose(
+  ([xs, signal]) => [last(xs), signal],
+  addIndex(reduce)(
+    ([xs, signal], x, i) => [
+      [...xs, x],
+      signal + ((i + 21) % 40 === 0 ? (i + 1) * x : 0),
+    ],
+    [[], 0],
+  ),
+  compute,
+);
 
-export const part2 = input => {
-  const result = compute(input);
-  // TODO
-  return result;
-};
+export const part2 = compose(
+  addIndex(reduce)((output, x, i) => {
+    if (i > 239) {
+      return output;
+    }
+    const shouldDraw = i % 40 >= x - 1 && i % 40 <= x + 1;
+    const sign = shouldDraw ? '#' : '.';
+    return output + ((i + 1) % 40 === 0 ? `${sign}\n` : sign);
+  }, ''),
+  compute,
+);
