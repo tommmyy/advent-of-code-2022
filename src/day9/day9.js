@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { compose, filter, map, reduce, split, times } from 'ramda';
+import { compose, filter, length, map, nth, reduce, split, times } from 'ramda';
 
 const parse = compose(
   map(compose(([a, b]) => [a, Number(b)], split(' '))),
@@ -69,11 +69,12 @@ export const part1 = input => {
 // };
 
 export const part2 = compose(
-  x => x.positions.length,
+  length,
+  nth(1),
   reduce(
     (state, [direction, steps]) => {
-      const ts = map(x => [...x], state.ts);
-      const positions = [...state.positions];
+      const ts = map(x => [...x], state[0]);
+      const positions = [...state[1]];
 
       for (let i = 0; i < steps; i++) {
         const diff = DIR_DIFF[direction];
@@ -89,12 +90,9 @@ export const part2 = compose(
           positions.push(key);
         }
       }
-      return { ts, positions };
+      return [ts, positions];
     },
-    {
-      ts: times(() => [0, 0], 10),
-      positions: ['0;0'],
-    },
+    [times(() => [0, 0], 10), ['0;0']],
   ),
   parse,
 );
